@@ -40,7 +40,7 @@ def route_get_problem_hints(problem_id):
 
 
 @problem_bp.get("/<int:problem_id>/constraints")
-def route_get_problem_constrains(problem_id):
+def route_get_problem_constraints(problem_id):
     return get_problem_constraints(problem_id)
 
 
