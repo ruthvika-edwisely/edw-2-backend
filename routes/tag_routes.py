@@ -8,3 +8,11 @@ tag_bp = Blueprint("tag_routes", __name__)
 @tag_bp.get("/")
 def route_get_all_tags():
     return 
+
+# get individual tag
+
+# delete tag
+
+# update tag
+
+# create tag

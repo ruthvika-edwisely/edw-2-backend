@@ -24,42 +24,48 @@ def route_get_all_problems():
     return get_all_problems()
 
 
-@problem_bp.get("/problem/<int:problem_id>")
+@problem_bp.get("/<int:problem_id>")
 def route_get_problem(problem_id):
     return get_problem(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/editorial")
+@problem_bp.get("/<int:problem_id>/editorial")
 def route_get_problem_editorial(problem_id):
     return get_problem_editorial(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/hints")
+@problem_bp.get("/<int:problem_id>/hints")
 def route_get_problem_hints(problem_id):
     return get_problem_hints(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/constraints")
+@problem_bp.get("/<int:problem_id>/constraints")
 def route_get_problem_constrains(problem_id):
     return get_problem_constraints(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/snippets")
+@problem_bp.get("/<int:problem_id>/snippets")
 def route_get_problem_snippets(problem_id):
     return get_problem_snippets(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/tags")
+@problem_bp.get("/<int:problem_id>/tags")
 def route_get_problem_tags(problem_id):
     return get_problem_tags(problem_id)
 
 
-@problem_bp.get("/problem/<int:problem_id>/testcases")
+@problem_bp.get("/<int:problem_id>/testcases")
 def route_get_problem_testcases(problem_id):
     return get_problem_testcases(problem_id)
 
 
-@problem_bp.post("/problem/create")
+@problem_bp.post("/create")
 def route_create_problem():
     data = request.json
     return create_problem(data)
+
+
+
+# delete problem
+
+# update problem

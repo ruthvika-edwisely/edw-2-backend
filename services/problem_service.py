@@ -8,7 +8,7 @@ from models.tag import Tag
 from models.language import Language
 from models.testcase import Testcase
 from db import db
-
+from data import get_data
 
 
 
@@ -19,7 +19,7 @@ def fetch_all_problems():
             "id": p.id,
             "title": p.title,
             "description": p.description,
-            "difficulty": p.difficulty,
+            "difficulty": p.difficulty.value if p.difficulty else None,
             "xp_reward": p.xp_reward,
             "created_at": p.created_at
         } for p in problems
@@ -37,7 +37,7 @@ def fetch_problem_by_id(problem_id: int):
             "id": problem.id,
             "title": problem.title,
             "description": problem.description,
-            "difficulty": problem.difficulty,
+            "difficulty": problem.difficulty.value if problem.difficulty else None,
             "xp_reward": problem.xp_reward,
             "created_at": problem.created_at
         }
@@ -112,6 +112,7 @@ def fetch_problem_snippets(problem_id: int):
             "problem_id": s.problem_id,
             "code": s.code,
             "language_name": s.language.name if s.language else None,
+            "language_id": s.language.id if s.language else None,
             "created_at": s.created_at
         }
 
@@ -128,7 +129,7 @@ def fetch_problem_tags(problem_id: int):
         {
             "id": t.tag_id,
             "name": t.tag.name if t.tag else None,
-            "category": t.tag.category if t.tag else None,
+            "category": t.tag.category.value if t.tag and t.tag.category else None,
         }
 
         for t in tags
@@ -152,277 +153,12 @@ def fetch_problem_testcases(problem_id: int):
         for tc in testcases
     ]
 
-def create_new_problem(data: dict):
+def create_new_problem(data):
     
-    data = {
-        "title": "Two Sum",
-        "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.",
-        "xpReward": 10,
-        "difficulty": "Easy",
-        "hints": [
-            {
-                "content": "Try using a hash map to store the numbers you've seen so far.",
-                "order": 1
-            },
-            {
-                "content": "For each number, check if target - current number exists in your hash map.",
-                "order": 2
-            },
-            {
-                "content": "The time complexity can be reduced to O(n) with this approach.",
-                "order": 3
-            }
-        ],
-
-        "constraints": [
-            {
-                "description": "2 <= nums.length <= 10^4",
-                "order": 1
-            },
-            {
-                "description": "-10^9 <= nums[i] <= 10^9",
-                "order": 2
-            },
-            {
-                "description": "-10^9 <= target <= 10^9",
-                "order": 3
-            },
-            {
-                "description": "Only one valid answer exists",
-                "order": 4
-            }
-        ],
-        
-        "editorial": {
-                "title": "Two sum",
-
-                    "overview": """
-                The **Two Sum** problem asks us to find two indices such that their values add up to a given target.
-
-                A few common approaches are:
-                - Brute Force using nested loops
-                - Hash Map for an optimal O(n) solution
-
-                Below are detailed explanations of both approaches.
-                """,
-
-                    "approaches": [
-                        {
-                            "id": "brute_force",
-                            "title": "Approach 1: Brute Force",
-                            "explanation": """
-                The simplest idea is to check every possible pair of numbers.
-
-                ### Algorithm
-                1. Loop through each index `i`
-                2. For each `i`, loop through each index `j > i`
-                3. If `nums[i] + nums[j] == target`, return `[i, j]`
-
-                ### Why it works
-                We explore all combinations, so if a solution exists, we will find it.
-
-                ### Complexity
-                - Time: O(n²)
-                - Space: O(1)
-                """,
-                            "code": {
-                                "python": """
-                class Solution:
-                    def twoSum(self, nums, target):
-                        for i in range(len(nums)):
-                            for j in range(i + 1, len(nums)):
-                                if nums[i] + nums[j] == target:
-                                    return [i, j]
-                """,
-                                "java": """
-                class Solution {
-                    public int[] twoSum(int[] nums, int target) {
-                        for (int i = 0; i < nums.length; i++) {
-                            for (int j = i + 1; j < nums.length; j++) {
-                                if (nums[i] + nums[j] == target) {
-                                    return new int[]{i, j};
-                                }
-                            }
-                        }
-                        return new int[]{};
-                    }
-                }
-                """,
-                                "cpp": """
-                class Solution {
-                public:
-                    vector<int> twoSum(vector<int>& nums, int target) {
-                        for (int i = 0; i < nums.size(); i++) {
-                            for (int j = i + 1; j < nums.size(); j++) {
-                                if (nums[i] + nums[j] == target) {
-                                    return {i, j};
-                                }
-                            }
-                        }
-                        return {};
-                    }
-                };
-                """
-                            }
-                        },
-
-                        {
-                            "id": "optimal_hashmap",
-                            "title": "Approach 2: Hash Map (Optimal O(n))",
-                            "explanation": """
-                We can solve the problem in **one pass** using a hash map.
-
-                ### Key Idea
-                While iterating over the array:
-                - Compute the complement: `target - nums[i]`
-                - If the complement is already in the map → we found the answer
-                - Otherwise, store the current number in the map
-
-                ### Algorithm
-                1. Create an empty hash map
-                2. Loop through each index `i`
-                3. Let `num = nums[i]`
-                4. Compute `complement = target - num`
-                5. If complement is in the map, return `[map[complement], i]`
-                6. Otherwise, store `map[num] = i`
-
-                ### Complexity
-                - Time: O(n)
-                - Space: O(n)
-                """,
-                            "code": {
-                                "python": """
-                class Solution:
-                    def twoSum(self, nums, target):
-                        seen = {}
-                        for i, value in enumerate(nums):
-                            complement = target - value
-                            if complement in seen:
-                                return [seen[complement], i]
-                            seen[value] = i
-                """,
-                                "java": """
-                class Solution {
-                    public int[] twoSum(int[] nums, int target) {
-                        Map<Integer, Integer> seen = new HashMap<>();
-
-                        for (int i = 0; i < nums.length; i++) {
-                            int complement = target - nums[i];
-
-                            if (seen.containsKey(complement)) {
-                                return new int[]{seen.get(complement), i};
-                            }
-
-                            seen.put(nums[i], i);
-                        }
-
-                        return new int[]{};
-                    }
-                }
-                """,
-                                "cpp": """
-                class Solution {
-                public:
-                    vector<int> twoSum(vector<int>& nums, int target) {
-                        unordered_map<int, int> seen;
-
-                        for (int i = 0; i < nums.size(); i++) {
-                            int complement = target - nums[i];
-
-                            if (seen.count(complement)) {
-                                return {seen[complement], i};
-                            }
-
-                            seen[nums[i]] = i;
-                        }
-
-                        return {};
-                    }
-                };
-                """
-                            }
-                        }
-                    ],
-
-                    "videoUrl": "https://www.youtube.com/watch?v=KLlXCFG5TnA"
-        },
-
-        "testcases": [
-            {
-                "input": "[2,7,11,15]\n9",
-                "expectedOutput": "[0,1]",
-                "isHidden": False,
-                "order": 1,
-                "explanation": ""
-            },
-            {
-                "input": "[3,2,4]\n6",
-                "expectedOutput": "[1,2]",
-                "isHidden": False,
-                "order": 2,
-                "explanation": ""
-            },
-            {
-                "input": "[3,3]\n6",
-                "expectedOutput": "[0,1]",
-                "isHidden": False,
-                "order": 3,
-                "explanation": ""
-            },
-            {
-                "input": "[1,5,3,7,8,9]\n12",
-                "expectedOutput": "[2,4]",
-                "isHidden": True,
-                "order": 4,
-                "explanation": ""
-            },
-            {
-                "input": "[-1,-2,-3,-4,-5]\n-8",
-                "expectedOutput": "[2,4]",
-                "isHidden": True,
-                "order": 5,
-                "explanation": ""
-            }
-        ],
-
-        "tags": [
-            {
-                "name": "Array",
-                "category": "topic"
-            },
-            {
-                "name": "Hash Table",
-                "category": "topic"
-            },
-            {
-                "name": "Google",
-                "category": "company"
-            },
-            {
-                "name": "Amazon",
-                "category": "company"
-            }
-        ],
-
-        "snippets": [
-            {
-                "code": "class Solution:\n    def twoSum(self, nums, target):\n        pass",
-                "lang": "python",
-                "compiler_language_id": 71
-            },
-            {
-                "code": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        return new int[]{};\n    }\n}",
-                "lang": "java",
-                "compiler_language_id": 63
-            },
-            {
-                "code": "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        return {};\n    }\n};",
-                "lang": "cpp",
-                "compiler_language_id": 42
-            }
-        ]
-    }
-
+    print(Problem.query.filter_by(title=data.get('title')).first()) 
+    if Problem.query.filter_by(title=data.get('title')).first() != None:    
+        print('helllooo')
+        return None
 
 
     problem = Problem(
@@ -463,8 +199,8 @@ def create_new_problem(data: dict):
     constraints_data = data.get('constraints', [])
     for c in constraints_data:
         constraint = Constraint(
-            content=c.get('description'),
-            order=h.get('order'),
+            description=c.get('description'),
+            order=c.get('order'),
             problem_id=problem.id
         )
 
@@ -551,4 +287,4 @@ def create_new_problem(data: dict):
 
 
 
-    
+        

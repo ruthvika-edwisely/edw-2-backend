@@ -1,11 +1,11 @@
-from ..db import db
+from db import db
 from datetime import datetime
 
 
 class Editorial(db.Model):
     __tablename__ = "editorial"
     id = db.Column(db.Integer, primary_key=True)
-    content_markdown = db.Column(db.Text, nullable=True)
+    content_markdown = db.Column(db.JSON, nullable=True)
     content_html = db.Column(db.Text, nullable=True)
     videoUrl = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

@@ -102,9 +102,14 @@ def get_problem_testcases(problem_id: int):
     except Exception as e:
         return error(str(e))
     
-def create_problem(data: dict):
+def create_problem(data):
     try:
         problem = create_new_problem(data)
+        print("Provlem : ", problem)
+
+        if not problem:
+            return error("Problem already exists")
+
         return success(data=problem, message="Problem created successfully")
     
     except Exception as e:

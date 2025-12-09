@@ -1,4 +1,4 @@
-from ..db import db
+from db import db
 from datetime import datetime
 import enum
 
@@ -27,7 +27,7 @@ class Problem(db.Model):
     hints = db.relationship("Hint", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
     constraints = db.relationship("Constraint", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
     snippets = db.relationship("Snippet", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
-    testcases = db.relationship("Testcase", bacl_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
+    testcases = db.relationship("Testcase", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
 
 
     # many-to-many (b/w problem and tag via problem_tag)

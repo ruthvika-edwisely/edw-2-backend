@@ -1,8 +1,8 @@
-from ..db import db
+from db import db
 from datetime import datetime
 
 class Constraint(db.Model):
-    __tablename__ = "constraint"
+    __tablename__ = "constraint_table"
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.Text, nullable=False)

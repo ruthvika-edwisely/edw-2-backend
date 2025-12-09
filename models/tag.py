@@ -1,10 +1,10 @@
-from ..db import db
+from db import db
 from datetime import datetime
 import enum
 
 
 class CategoryEnum(enum.Enum):
-    Topic = "Topic",
+    Topic = "Topic"
     Company = "Company"
 
 

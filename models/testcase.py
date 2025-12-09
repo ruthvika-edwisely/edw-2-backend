@@ -1,4 +1,4 @@
-from ..db import db
+from db import db
 from datetime import datetime
 
 class Testcase(db.Model):
@@ -7,7 +7,7 @@ class Testcase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     input_data = db.Column(db.Text, nullable=False)
     expected_output = db.Column(db.Text, nullable=False)
-    explantion = db.Column(db.Text, nullable=True)
+    explanation = db.Column(db.Text, nullable=True)
     isHidden = db.Column(db.Boolean, default=False)
     order = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)    

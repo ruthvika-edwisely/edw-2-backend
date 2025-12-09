@@ -1,4 +1,4 @@
-from ..db import db
+from db import db
 from datetime import datetime
 
 class ProblemTag(db.Model):
@@ -15,7 +15,7 @@ class ProblemTag(db.Model):
 
 
     __table_args__ = (
-        db.UniqueConstraint('problem_id', 'tag_id', name='unique_problem_tag')
+        db.UniqueConstraint('problem_id', 'tag_id', name='unique_problem_tag'),
     )
 
 

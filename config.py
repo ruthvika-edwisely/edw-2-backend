@@ -2,10 +2,8 @@ import os
 
 
 class Config: 
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    DEBUG = True
 
+    # print(os.environ.get("DATABASE_URL"))
 
-    SQLALCHEMY_DB_URI = os.environ.get("DATABASE_URL")
-
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
