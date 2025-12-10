@@ -287,6 +287,25 @@ def create_new_problem(data):
 
 
 
-
+def fetch_daily_challenge():
+    # Fetch all problems from DB
+    problems = Problem.query.all()
+    if not problems:
+        return None
+    
+    # Pick a random problem (can later change to fixed daily problem logic)
+    problem = random.choice(problems)
+    
+    # Collect tags
+    tags = [tag.tag.name for tag in problem.tags]
+    
+    return {
+        "id": problem.id,
+        "title": problem.title,
+        "description": problem.description,
+        "difficulty": problem.difficulty.value,
+        "xp": problem.xp_reward,
+        "tags": tags
+    }
 
         
