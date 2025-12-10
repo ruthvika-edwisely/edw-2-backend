@@ -62,7 +62,7 @@ def route_get_problem_testcases(problem_id):
 @problem_bp.post("/create")
 def route_create_problem():
     data = request.json
-    return create_problem(data)
+    return create_problem({})
 
 
 

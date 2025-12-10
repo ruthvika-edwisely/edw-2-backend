@@ -17,6 +17,9 @@ class Testcase(db.Model):
     problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
     problem = db.relationship("Problem", back_populates="testcases")
 
+    testcase_results = db.relationship("TestcaseResult", back_populates="testcase", cascade="all,delete-orphan", lazy="dynamic")
+
+
 
     def __repr__(self):
         return f"<Testcase {self.id} for problem {self.problem_id}>"

@@ -5,6 +5,7 @@ load_dotenv()
 
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from config import Config
 from db import db
 from routes import register_routes
@@ -22,9 +23,10 @@ def create_app():
 
     # This must be called before accessing the database engine or session with the app.
     db.init_app(app)
-
+    JWTManager(app)
     register_routes(app)
 
+    import models
     with app.app_context():
         # Create tables that do not exist in the database
         db.create_all()

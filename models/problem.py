@@ -28,6 +28,9 @@ class Problem(db.Model):
     constraints = db.relationship("Constraint", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
     snippets = db.relationship("Snippet", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
     testcases = db.relationship("Testcase", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
+    submissions = db.relationship("Submission", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
+    testcase_results = db.relationship("TestcaseResult", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
+    solved_users = db.relationship("SolvedProblem", back_populates="problem", cascade="all,delete-orphan", lazy="dynamic")
 
 
     # many-to-many (b/w problem and tag via problem_tag)

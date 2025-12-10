@@ -7,3 +7,9 @@ from .tag import Tag
 from .language import Language
 from .snippet import Snippet
 from .testcase import Testcase
+from .college import College
+from .solved_problem import SolvedProblem
+from .submission import Submission
+from .user import User
+from .submissions_answer import SubmissionAnswer
+from .testcase_result import TestcaseResult
