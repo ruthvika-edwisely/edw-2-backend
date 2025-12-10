@@ -21,3 +21,6 @@ class SubmissionAnswer(db.Model):
 
     submission_id = db.Column(db.Integer, db.ForeignKey("submission.id"), nullable=False)
     submission = db.relationship("Submission", back_populates="submission_answer")
+
+    language_id = db.Column(db.Integer, db.ForeignKey("language.id"), nullable=False)
+    language = db.relationship("Language", back_populates="submission_answers")

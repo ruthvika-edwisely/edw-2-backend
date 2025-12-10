@@ -8,7 +8,7 @@ language_bp = Blueprint("language_routes", __name__)
 def route_get_all_languages():
     return 
 
-def route_create_language():
+def route_get_language_by_name():
     return
 
 # delete language

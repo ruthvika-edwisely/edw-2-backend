@@ -11,6 +11,7 @@ class Language(db.Model):
 
     # one-to-many-relationship
     snippets = db.relationship("Snippet", back_populates="language", cascade="all,delete-orphan", lazy="dynamic")
+    submission_answers = db.relationship("SubmissionAnswer", back_populates="language")
 
 
     def __repr__(self):
